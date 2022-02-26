@@ -16,6 +16,7 @@ import os
 import time
 import cv2 as cv
 import argparse
+import ctypes  # An included library with Python install.
 
 
 #todo - remove random
@@ -43,6 +44,8 @@ def detectWidth(frame):
     cv.imshow('Capture - Face detection', frame)
     return width
 
+def Mbox(title, text, style):
+    return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
 
 def pygame_loop():
@@ -119,6 +122,7 @@ while True:
     if width > 180:
         pygame.init()
         screen.fill((200,0,0))
+        Mbox('Your title', 'Your text', 0)
         warning = True
     else:
         screen.fill((255, 255, 255))
