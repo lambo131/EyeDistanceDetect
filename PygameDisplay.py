@@ -111,19 +111,25 @@ def updateGUI():
     clock.tick(60)
 Thread(target=updateGUI, args=()).start()
 
+toggle = False
 while True:
     ret, frame = stream.read()
     width = detectWidth(frame)
     print(width)
     if width > 180:
+        pygame.init()
         screen.fill((200,0,0))
+        warning = True
     else:
         screen.fill((255, 255, 255))
+        warning = False
+
     pygame.display.flip()
 
 
     if cv.waitKey(1) & 0xFF == ord('q'):
+        pygame.quit()
         break
 
-
-
+stream.release()
+cv.destroyAllWindows()
