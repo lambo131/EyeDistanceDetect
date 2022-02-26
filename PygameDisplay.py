@@ -17,10 +17,9 @@ import time
 import cv2 as cv
 import argparse
 import ctypes  # An included library with Python install.
+import time
 
 
-#todo - remove random
-import random
 
 def detectWidth(frame):
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -115,16 +114,21 @@ def updateGUI():
 Thread(target=updateGUI, args=()).start()
 
 toggle = False
+timer = 0
 while True:
+    timeNow = time.time()
     ret, frame = stream.read()
+    #frame = vs.read()
     width = detectWidth(frame)
-    print(width)
+
     if width > 180:
-        pygame.init()
-        screen.fill((200,0,0))
-        Mbox('Your title', 'Your text', 0)
-        warning = True
+        print(timeNow - timer)
+        if timeNow - timer > 5:
+            screen.fill((200,0,0))
+            Mbox('Your title', 'Your text', 0)
+            warning = True
     else:
+        timer = timeNow
         screen.fill((255, 255, 255))
         warning = False
 
