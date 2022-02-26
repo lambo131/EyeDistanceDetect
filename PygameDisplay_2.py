@@ -78,7 +78,7 @@ def detectWidth(frame):
     width = 0
     for (x, y, w, h) in faces:
         center = (x + w // 2, y + h // 2)
-        frame = cv.ellipse(frame, center, (w // 2, h // 2), 0, 0, 360, (255, 0, 255), 4)
+        frame = cv.ellipse(frame, center, (w // 2, h // 2), 0, 0, 360, (0, 0, 255), 4)
         faceROI = frame_gray[y:y + h, x:x + w]
         # -- In each face, detect eyes
         eyes = eyes_cascade.detectMultiScale(faceROI)
@@ -87,7 +87,7 @@ def detectWidth(frame):
 
             eye_center = (x + x2 + w2 // 2, y + y2 + h2 // 2)
             radius = int(round((w2 + h2) * 0.25))
-            frame = cv.circle(frame, eye_center, radius, (255, 0, 0), 4)
+            frame = cv.circle(frame, eye_center, radius, (0, 255, 0), 4)
 
         width = w
     cv.imshow('Capture - Face detection', frame)
@@ -204,24 +204,32 @@ Thread(target=updateGUI, args=()).start()
 
 
 start = time.time()
+timeLast = start
+alertTimeLimit = 5 #seconds. Change this variable with the interface code
+alertTime = 0
+totalAlertTime = 0
 distance_list=[]
 num_popups = 0
-
 Close = False
-toggle = False
 while True:
-    start_close_screen = time.time()
-    still_close_screen = time.time()
-    
+    timeNow = time.time()
     ret, frame = stream.read()
     width = detectWidth(frame)
     distance_list.append(width)
 
     if width > 180:
-        Mbox('Get away!', 'You are too close to the screen', 0)
-        num_popups +=1
-        startloop = time.time()
-    
+        print(timeNow - timeLast)
+        alertTime = timeNow - timeLast
+        #This line creates the popup after a period of time has past where face is too close to screen
+        if(timeNow - timeLast > alertTimeLimit):
+            Mbox('Get away!', 'You are too close to the screen', 0)
+            num_popups +=1
+
+    else:
+        totalAlertTime += alertTime
+        alertTime = 0
+        print("total alert time:", totalAlertTime)
+        timeLast = timeNow
     
     for event in pygame.event.get():
         
