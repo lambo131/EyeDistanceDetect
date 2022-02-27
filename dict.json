@@ -1,1 +1,6 @@
-{"h_21_m_2": {"average_distance": 0, "num_popups": 2, "time_opened": 8.810412883758545}}
+{"h_1_m_50": {"AlertTime": 75.0, "num_popups": 10.0}, "h_1_m_51": {"AlertTime": 81.7, "num_popups": 12.7},
+"h_2_m_50": {"AlertTime": 82.0, "num_popups": 8.0}, "h_2_m_51": {"AlertTime": 69.7, "num_popups": 10.3},
+"h_3_m_50": {"AlertTime": 16.0, "num_popups": 5.0}, "h_3_m_51": {"AlertTime": 70.7, "num_popups": 9.7},
+"h_4_m_50": {"AlertTime": 27.0, "num_popups": 6.0}, "h_4_m_51": {"AlertTime": 47.7, "num_popups": 6.2},
+"h_5_m_50": {"AlertTime": 36.0, "num_popups": 5.0}, "h_5_m_51": {"AlertTime": 49.7, "num_popups": 4.6},
+"h_6_m_50": {"AlertTime": 41.0, "num_popups": 4.0}, "h_6_m_51": {"AlertTime": 36.7, "num_popups": 3.7}}
