@@ -34,6 +34,9 @@ screen_width, screen_height = 500, 500
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 
+
+font_title = pygame.font.SysFont("Segoe UI", 40, bold = True)
+
 font_30 = pygame.font.SysFont("calibri", 30)
 font_24 = pygame.font.SysFont("calibri", 24)
 font_18 = pygame.font.SysFont("calibri", 18) 
@@ -141,7 +144,7 @@ def draw_graph (x,y,width,height,x_lst,y_lsts):
         prev_x_pos = 0
         color = colors[index]
         for index, val in enumerate(y_lst):
-            i=index+1
+            i=index
             y_pos = int(y+height-val/max_y*height)
             x_pos = int(x+i/max_x*width)
             pygame.draw.circle(screen, color,(x_pos,y_pos), 1)
@@ -196,16 +199,31 @@ def give_averages():
         write_message("{:.1f}".format(popups), rectangle=(width, height+70), centered=True, font=font_14)
         width += 40
         
-    write_message("alert time", rectangle=(25,430), font=font_16, color=(0,0,150))
-    write_message("popups", rectangle=(25,450), font=font_16, color=(0,150,0))
+    write_message("alert time", rectangle=(55,430), font=font_16, color=(0,0,150))
+    write_message("popups", rectangle=(55,450), font=font_16, color=(0,150,0))
     
-    draw_graph(20,370,400,100,hours_list, y_lst)
+    draw_graph(50,370,400,100,hours_list, y_lst)
         
 def draw_Initial_Screen():
+    ini=170
+    sp=20
+    
     screen.fill((255,255,255))
-    write_message("Welcome to GoodEyes!", rectangle=(screen_width/2, 20), centered=True, font=font_24)
-    write_message("You will be warned if you are too close to the screen", rectangle=(screen_width/2, 80), centered=True, font=font_16)
-    write_message("Press the button to start tracking!", rectangle=(screen_width/2, 120), centered=True, font=font_16)
+    write_message("G", rectangle=(ini, 20), font=font_title, color=(148,0,211))
+    write_message("o", rectangle=(ini+sp, 20), font=font_title, color=(75,0,130))
+    write_message("o", rectangle=(ini+sp*2, 20), font=font_title, color=(75, 0, 130))
+    write_message("d", rectangle=(ini+sp*3, 20), font=font_title, color=(0, 0, 255))
+    write_message("E", rectangle=(ini+sp*4, 20), font=font_title, color=(0, 255, 0))
+    write_message("y", rectangle=(ini+sp*5, 20), font=font_title, color=(220, 220, 0))
+    write_message("e", rectangle=(ini+sp*6, 20), font=font_title, color=(255, 127, 0))
+    write_message("s", rectangle=(ini+sp*7, 20), font=font_title, color=(255, 0 , 0))
+    
+    
+    #write_message("GoodEyes", rectangle=(screen_width/2, 20), centered=True, font=font_title)
+    
+    write_message("Welcome to GoodEyes!", rectangle=(screen_width/2, 95), centered=True, font=font_16)
+    write_message("You will be warned if you are too close to the screen", rectangle=(screen_width/2, 120), centered=True, font=font_16)
+    write_message("Press the button to start tracking!", rectangle=(screen_width/2, 140), centered=True, font=font_16)
     
     give_averages()
     
@@ -325,7 +343,9 @@ alertTime = 0
 totalAlertTime = 0
 distance_list=[]
 num_popups = 0
+already_seen = False
 while Open:
+
     Open, button_off = change_button_colors(button_off)
     
     timeNow = time.time()
@@ -338,16 +358,24 @@ while Open:
         alertTime = timeNow - timeLast
         #This line creates the popup after a period of time has past where face is too close to screen
         if(timeNow - timeLast > alertTimeLimit):
+            if already_seen:
+                already_seen = False
+                continue
+            else: 
+                already_seen = True
             MB_YESNO = 4
             MB_TOPMOST = 0x40000
             uType = 0 | MB_TOPMOST
             Mbox('Get away!', 'You are too close to the screen', uType)
             num_popups +=1
-
+            
     else:
         totalAlertTime += alertTime
         alertTime = 0
-        print("total alert time:", totalAlertTime)
+        screen.fill((255,255,255), (20,200,150,30))
+        write_message("total alert time: {:.1f}s".format(totalAlertTime), rectangle=[20,200])
+        pygame.display.update
+        print("total aleart time", totalAlertTime)
         timeLast = timeNow
     
     
